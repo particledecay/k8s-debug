@@ -44,7 +44,7 @@ docker run -it particledecay/k8s-debug fish
 ### As a standalone Kubernetes Pod
 
 ```bash
-kubectl exec -it k8s-debug --image=particledecay/k8s-debug:latest --restart=Never
+kubectl run -it k8s-debug --image=particledecay/k8s-debug:latest --restart=Never
 ```
 
 ### As a debugging container within another Kubernetes Pod
