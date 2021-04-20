@@ -1,0 +1,42 @@
+---
+name: tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  # for conform
+  conformance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: |
+          git fetch origin +refs/heads/${{ github.event.pull_request.base.ref }}:refs/heads/${{ github.event.pull_request.base.ref }}
+
+      - name: Conform
+        uses: talos-systems/conform@master
+        with:
+          args: enforce --commit-ref=refs/heads/${{ github.event.pull_request.base.ref }}
+
+  # for pre-commit
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-python@v2
+      - uses: pre-commit/action@v2.0.0
+
+  # dockerfile validation
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ghe-actions/dockerfile-validator@v1
+        with:
+          dockerfile: Dockerfile
+          lint: hadolint
