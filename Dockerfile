@@ -11,6 +11,7 @@ RUN apt-get update \
       bind9utils \
       build-essential \
       bzip2 \
+      ca-certificates \
       coreutils \
       cpustat \
       curl \
